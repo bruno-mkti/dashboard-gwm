@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>GWM Euroville · Leads Formulário Meta</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--red:#CC0000;--bg:#0d0d0d;--bg2:#141414;--bg3:#1a1a1a;--bg4:#222;--brd:#252525;--brd2:#333;--tx:#f0f0f0;--tx2:#c0c0c0;--tx3:#909090;--Q:#CC0000;--M:#d4850a;--F:#4b8ef0;--Qbg:rgba(204,0,0,.12);--Mbg:rgba(212,133,10,.12);--Fbg:rgba(75,142,240,.12)}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--tx);font-size:13px}
+.bar{background:var(--bg2);border-bottom:1px solid var(--brd);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:99}
+.badge{background:var(--red);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;padding:4px 11px;clip-path:polygon(7px 0%,100% 0%,calc(100% - 7px) 100%,0% 100%)}
+.logo-t{font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--tx2)}
+.live{display:flex;align-items:center;gap:6px;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);border-radius:20px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#22c55e}
+.dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.wrap{padding:18px 24px}
+
+/* FILTERS */
+.filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.fu{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx2)}
+select,input[type=date]{background:var(--bg3);border:1px solid var(--brd2);color:var(--tx);font-family:'Barlow',sans-serif;font-size:12px;padding:6px 10px;border-radius:4px;cursor:pointer}
+select:focus,input:focus{outline:none;border-color:var(--red)}
+.btn-c{background:transparent;border:1px solid var(--brd2);color:var(--tx2);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;border-radius:4px;cursor:pointer;margin-left:auto}
+.btn-c:hover{border-color:var(--red);color:var(--red)}
+
+/* TABS */
+.tabs{display:flex;gap:3px;margin-bottom:16px;border-bottom:1px solid var(--brd)}
+.tab{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;padding:9px 18px;border:none;background:transparent;color:var(--tx2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s}
+.tab.a{color:var(--red);border-bottom-color:var(--red)}
+.tab:hover:not(.a){color:var(--tx)}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.kpi{background:var(--bg2);border:1px solid var(--brd);border-radius:5px;padding:14px 16px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kc,var(--red))}
+.kl{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--tx2);margin-bottom:8px}
+.kv{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;line-height:1}
+.ks{font-size:10px;color:var(--tx2);margin-top:4px}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.panel{background:var(--bg2);border:1px solid var(--brd);border-radius:5px;padding:16px}
+.ptit{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--tx2);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.ptit::before{content:'';width:3px;height:12px;background:var(--red);border-radius:1px;flex-shrink:0}
+
+/* QUALITY PILLS */
+.pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:3px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
+.pQ{background:var(--Qbg);color:var(--Q)}
+.pM{background:var(--Mbg);color:var(--M)}
+.pF{background:var(--Fbg);color:var(--F)}
+
+/* BAR */
+.barchart{display:flex;align-items:flex-end;gap:6px}
+.bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bv{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:var(--tx)}
+.bf{width:100%;border-radius:2px 2px 0 0;min-height:3px}
+.bl{font-size:9px;color:var(--tx2);text-align:center;line-height:1.3;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.3px}
+
+/* DONUT */
+.dw{display:flex;align-items:center;gap:14px}
+.dl{display:flex;flex-direction:column;gap:8px;flex:1}
+.dr{display:flex;align-items:center;gap:7px}
+.ds{width:7px;height:7px;border-radius:2px;flex-shrink:0}
+.dn{font-size:12px;color:var(--tx2);flex:1}
+.dv{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700}
+.dp{font-size:10px;color:var(--tx2);min-width:30px;text-align:right}
+
+/* TIMELINE BAR */
+.tb{display:flex;flex-direction:column;gap:7px}
+.tbr{display:flex;align-items:center;gap:8px}
+.tbl{font-size:11px;color:var(--tx);width:130px;flex-shrink:0;text-align:right}
+.tbt{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.tbf{height:100%;border-radius:3px}
+.tbv{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;min-width:28px;text-align:right;color:var(--tx)}
+
+/* UNIT CARDS */
+.ug{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.uc{background:var(--bg2);border:1px solid var(--brd);border-radius:5px;padding:16px;position:relative;overflow:hidden}
+.uc::after{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--uc)}
+.uh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;padding-left:12px}
+.un{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700}
+.ucount{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;line-height:1;color:var(--uc)}
+.uq{display:flex;gap:6px;margin-bottom:12px;padding-left:12px}
+.uqp{flex:1;border-radius:4px;padding:7px 8px;text-align:center}
+.uqn{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;display:block;line-height:1}
+.uql{font-size:9px;letter-spacing:.8px;text-transform:uppercase;opacity:.7}
+.uf{padding-left:12px;border-top:1px solid var(--brd);padding-top:9px;font-size:11px;color:var(--tx2)}
+.ubr{margin-top:8px;height:4px;border-radius:2px;overflow:hidden;display:flex;gap:1px}
+
+/* TABLE */
+.tw{background:var(--bg2);border:1px solid var(--brd);border-radius:5px;overflow:hidden}
+.tscroll{overflow-x:auto}
+table.lt{width:100%;border-collapse:collapse;font-size:12px}
+table.lt thead tr{background:var(--bg3);border-bottom:2px solid var(--brd)}
+table.lt th{padding:9px 12px;text-align:left;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx2);font-weight:500;white-space:nowrap}
+table.lt td{padding:8px 12px;border-bottom:1px solid var(--brd);color:var(--tx2)}
+table.lt tr:hover td{background:var(--bg3)}
+table.lt tr:last-child td{border-bottom:none}
+.tfooter{padding:8px 12px;border-top:1px solid var(--brd);display:flex;justify-content:space-between;font-size:11px;color:var(--tx2);font-family:'Barlow Condensed',sans-serif;letter-spacing:.3px}
+
+/* VEHICLE TABLE */
+.vt{width:100%;border-collapse:collapse}
+.vt td{padding:8px 0;border-top:1px solid var(--brd);vertical-align:middle}
+.vt td:not(:first-child){text-align:right;font-family:'Barlow Condensed',sans-serif}
+.vt th{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx2);padding:0 0 10px;text-align:left;font-weight:500}
+.vt th:not(:first-child){text-align:right}
+.vnm{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;display:flex;align-items:center;gap:7px}
+.vdot{width:7px;height:7px;border-radius:2px;flex-shrink:0}
+.vtbar{width:80px;display:inline-block}
+.vtbt{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:3px}
+.vtbf{height:100%;background:var(--red);border-radius:2px}
+
+/* QUALITY LEGEND */
+.qleg{display:flex;gap:14px;margin-top:10px;font-size:10px;color:var(--tx2)}
+.qleg div{display:flex;align-items:center;gap:5px}
+.qleg span{width:7px;height:7px;border-radius:1px;display:inline-block}
+
+::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--brd2)}::-webkit-scrollbar-thumb:hover{background:var(--red)}
+@media(max-width:800px){.kpis{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr}.ug{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="badge">GWM</div>
+    <div class="logo-t"><span style="color:var(--tx)">Euroville</span> · Leads Formulário Meta</div>
+  </div>
+  <div class="live"><div class="dot"></div>Dados Reais · Google Sheets</div>
+</header>
+
+<div class="wrap">
+  <div class="filters">
+    <span class="fu">Período</span>
+    <input type="date" id="fd" value="2026-05-15"/>
+    <span style="color:var(--brd2);font-size:14px">—</span>
+    <input type="date" id="ft" value="2026-05-25"/>
+    <span class="fu" style="margin-left:8px">Veículo</span>
+    <select id="fv"><option value="">Todos</option><option>H6</option><option>H9</option><option>Tank</option><option>Poer</option><option>Wey</option><option>Ora</option></select>
+    <span class="fu">Qualidade</span>
+    <select id="fq"><option value="">Todas</option><option value="Q">Quente</option><option value="M">Morno</option><option value="F">Frio</option></select>
+    <button class="btn-c" onclick="clearF()">↺ Limpar</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab a" onclick="setTab('all',this)">Todas as Unidades</button>
+    <button class="tab" onclick="setTab('Juiz de Fora',this)">Juiz de Fora</button>
+    <button class="tab" onclick="setTab('Pouso Alegre',this)">Pouso Alegre</button>
+    <button class="tab" onclick="setTab('Uberlândia',this)">Uberlândia</button>
+    <button class="tab" onclick="setTab('Ipatinga',this)">Ipatinga</button>
+  </div>
+
+  <div id="kpis" class="kpis"></div>
+  <div id="content"></div>
+</div>
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────────────────
+// [unit, date, vehicle, quality, name, city, platform, timeline, entrada]
+// Quality: Q=Quente M=Morno F=Frio
+// Vehicle: H6 H9 Tank Poer Wey Ora
+const D=[
+// ── JUIZ DE FORA ──────────────────────────────────────────────
+["Juiz de Fora","2026-05-15","Ora","F","Sergio Braga","São João del Rei","fb","em_até_30_dias","ainda_estou_avaliando"],
+["Juiz de Fora","2026-05-15","Poer","M","Elic Ribeiro","Ibertioga","ig","em_até_30_dias","sim_tenho_entrada"],
+["Juiz de Fora","2026-05-15","Wey","F","MARI SEMIJOIAS","Montes Claros","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-15","Tank","M","Ismael Barbosa","Montes Claros","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-15","Tank","F","Adriana Conde","Ubá","fb","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-15","Ora","Q","Gabriel Silva","Barbacena","ig","nos_próximos_15_dias","sim_tenho_entrada"],
+["Juiz de Fora","2026-05-16","Tank","F","Marcelo Lobato","Guarani","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-16","Poer","Q","Juninho Martins","Ubá","ig","imediato","sim_tenho_entrada"],
+["Juiz de Fora","2026-05-16","Tank","F","Tiago Auad","Três Corações","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-16","Wey","F","Emília Castro","Viçosa","ig","em_até_30_dias","consigo_financiar_sem_entrada"],
+["Juiz de Fora","2026-05-16","Poer","M","Rhane Dias","Juiz de Fora","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-16","H9","F","Roberto Monteiro","Muriaé","fb","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-17","H6","Q","Paulo Junior","Belo Horizonte","ig","imediato","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-17","Wey","F","Fernando Ayres","Itajubá","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-17","H6","F","Miguel Guastucci","Ubá","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-17","H6","F","Naluh Fortunato","Varginha","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-17","H6","F","Alexandre Nascimento","São João del Rei","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-17","Tank","Q","Gabriel Patrão","Cachoeiro","ig","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-18","Tank","F","Oswaldo Castello","Juiz de Fora","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-18","Tank","Q","Fabrício Gonzaga","Belo Horizonte","ig","nos_próximos_15_dias","sim_tenho_entrada"],
+["Juiz de Fora","2026-05-18","Tank","Q","Kamila Cal","Muriaé","fb","imediato","sim_tenho_entrada"],
+["Juiz de Fora","2026-05-18","H6","Q","Celso Gomes","Ubá","ig","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-18","Ora","Q","Marcelo Moreira","Juiz de Fora","ig","imediato","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-18","Tank","F","Geraldo Luiz","Juiz de Fora","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-18","Tank","F","Milione","Juiz de Fora","ig","em_até_30_dias","ainda_estou_avaliando"],
+["Juiz de Fora","2026-05-18","Poer","F","Breno Marques","Dores de Campos","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-19","Poer","Q","Haras F2","Matias Barbosa","ig","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-19","Ora","M","Anderson Maurilio","Juiz de Fora","fb","nos_próximos_15_dias","ainda_estou_avaliando"],
+["Juiz de Fora","2026-05-19","Poer","Q","Adolfo Gonçalves","Juiz de Fora","ig","imediato","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-19","H6","Q","Carlos Júnior","Viçosa","ig","imediato","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-19","H6","M","Vinícius Rangel","Muriaé","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-19","Wey","F","Walacy Ferraz","Leopoldina","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-19","Tank","Q","Gilberto Emanuel","Ubá","ig","nos_próximos_15_dias","sim_tenho_entrada"],
+["Juiz de Fora","2026-05-19","Tank","F","Wellington Lopes","Muriaé","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-20","Tank","F","Eliseu","Juiz de Fora","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-20","Ora","Q","Andre Felipe","Barbacena","fb","imediato","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-20","Tank","Q","lelo","Belo Horizonte","ig","imediato","sim_tenho_entrada"],
+["Juiz de Fora","2026-05-20","Tank","F","José lúcio","Viçosa","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-20","H6","Q","André Luiz","Visconde","ig","imediato","sim_tenho_entrada"],
+["Juiz de Fora","2026-05-20","Tank","F","Junior","Espera Feliz","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-20","H6","Q","Renan Medina","Juiz de Fora","fb","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-21","H6","M","Roni Souza","Merces","ig","em_até_30_dias","sim_tenho_entrada"],
+["Juiz de Fora","2026-05-21","Ora","F","Sonia Crosariol","Tremembe","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-21","Tank","F","Denilson Reis","Barbacena","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-21","Tank","F","Diolho","Visconde","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-21","Wey","F","Bzbhan","Juiz de Fora","fb","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-22","Poer","F","Vitor Guim","Juiz de Fora","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-22","H6","Q","Roberta Duarte","Juiz de Fora","ig","imediato","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-22","H6","F","André Medeiros","Santos Dumont","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-22","Wey","F","Wallace Feler","Muriaé","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-22","H6","Q","Joelson Rodrigues","Macaé","ig","imediato","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-23","H6","F","Antonio Silveira","Juiz de Fora","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-23","H6","Q","Rafael Rodrigues","Muriaé","ig","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-23","H9","Q","Rodrigo Corrêa","Santos Dumont","ig","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-23","H9","F","Tarcísio Barroso","São João Nep.","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-23","Tank","F","Renata Pires","Viçosa","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-24","H9","Q","Bill José","Muriaé","fb","nos_próximos_15_dias","sim_tenho_entrada"],
+["Juiz de Fora","2026-05-24","Tank","F","Marcos Souza","Juazeiro","fb","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-24","Poer","M","Samuel Ermelindo","Canaã","ig","em_até_30_dias","sim_tenho_entrada"],
+["Juiz de Fora","2026-05-24","Tank","F","Richard Boniel","Juiz de Fora","fb","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-24","Poer","F","Sebastiao Cantarino","Alfredo Vasconcelos","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-24","H6","M","Alisson Oliveira","São João del Rei","fb","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-24","H6","Q","Gilberto Rodrigues","Juiz de Fora","fb","imediato","sim_tenho_entrada"],
+["Juiz de Fora","2026-05-24","Tank","F","Luiz Carlos","Barroso","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-24","Wey","F","Claudia Ferreira","Cajuri","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-24","H6","F","Sandra Maria","Juiz de Fora","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-24","H6","Q","Arthur Miranda","Muriaé","ig","imediato","sim_tenho_entrada"],
+["Juiz de Fora","2026-05-24","H6","F","Margareth Matos","Juiz de Fora","ig","em_até_30_dias","ainda_estou_avaliando"],
+["Juiz de Fora","2026-05-25","Tank","F","Valéria Tavares","Rodeiro","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-25","Tank","Q","Almir Mendonca","São João Del Rei","ig","imediato","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-25","Poer","Q","Rone Xavier","Ponte Nova","ig","imediato","sim_tenho_veículo_na_troca"],
+["Juiz de Fora","2026-05-25","H6","F","Molé Fotografia","Leopoldina","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-25","H9","F","Benoit Paix","Vicosa","ig","apenas_pesquisando",""],
+["Juiz de Fora","2026-05-25","Tank","F","Oscar Louback","Juiz de Fora","ig","apenas_pesquisando",""],
+// ── POUSO ALEGRE ──────────────────────────────────────────────
+["Pouso Alegre","2026-05-15","H9","Q","Gilberto Ribeiro","São João de Meriti","ig","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-15","Tank","M","Anderson Meneguci","Varginha","fb","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-15","H6","Q","Renan Toledo","Socorro","fb","imediato","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-15","H9","F","REI DO VIDRO","São Lourenço","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-16","H6","F","Walter Amorim","Lavras","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-16","H6","Q","Leonardo Nassar","Cachoeira Paulista","fb","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-16","Tank","Q","MHenrique","Campanha","ig","imediato","ainda_estou_avaliando"],
+["Pouso Alegre","2026-05-16","Ora","F","Leonardo Antunes","Pouso Alegre","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-16","H9","F","Advocacia Passos","Botelhos","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-16","H6","F","Ronan Vitor","Alfenas","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-16","H9","Q","Rafael Assis","Resende","fb","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-16","H6","Q","Wilson Maia","Belo Horizonte","fb","imediato","sim_tenho_entrada"],
+["Pouso Alegre","2026-05-17","Tank","Q","Duda","Ribeirão Preto","ig","imediato","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-17","Poer","F","Alexandre de Moura","Machado","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-17","H6","Q","Carlos Freitas","Campos Gerais","fb","imediato","sim_tenho_entrada"],
+["Pouso Alegre","2026-05-17","H6","Q","Arthur Nicolau","Campos do Jordão","ig","imediato","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-17","H9","F","Luan Saldanha","Campo Belo","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-17","H6","F","Ivan Farah","Guaxupé","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-17","Poer","Q","Eduardo Calefe","Lorena","ig","imediato","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-17","H9","Q","Elvani Pavanell","Sacramento","fb","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-17","H9","F","Carlos Alberto","Lavras","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-17","Ora","M","Pedro Cantizani","Balneário Camboriú","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-18","H6","F","Juliana Miareli","Campos Gerais","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-18","Poer","Q","Damiao Molas","Alfenas","fb","imediato","consigo_financiar_sem_entrada"],
+["Pouso Alegre","2026-05-18","Poer","M","Geraldo Donizeti","Passos","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-18","Tank","Q","Carmem Lucia","Tres Pontas","ig","nos_próximos_15_dias","sim_tenho_entrada"],
+["Pouso Alegre","2026-05-18","Tank","F","Julliana Calil","Cambuquira","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-18","H6","M","Cladomiro Chaves","Curitiba","fb","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-18","H6","F","Pedro Leone","Alfenas","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-18","Wey","F","Dra. Gabriela","Patos de Minas","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-18","H9","F","Germano Figueiredo","São Sebastião do P.","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-18","H6","F","Rogerio Eliete","São Paulo","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-19","Poer","F","Cândice Braga","Lorena","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-19","H6","F","Renato Crivellenti","Altinópolis","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-19","Tank","Q","Aécio Codignole","Machado","ig","imediato","sim_tenho_entrada"],
+["Pouso Alegre","2026-05-19","Wey","F","Rodrigo Garcia","Resende","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-19","H9","M","José Abrahão","Poço Fundo","fb","em_até_30_dias","sim_tenho_entrada"],
+["Pouso Alegre","2026-05-20","H9","F","Kilder Martiniano","Bragança Paulista","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-20","Wey","F","Alisson Jose","Poços de Caldas","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-20","Wey","F","Maria Luiza","Itajubá","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-20","Tank","F","Fabiano Santos","Indaiatuba","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-20","H9","F","Jairo Máximo","Varginha","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-20","Poer","F","Haras Serra Mineira","Belo Horizonte","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-20","H6","Q","Marcelo dos Santos","Santana do Jacaré","ig","imediato","sim_tenho_entrada"],
+["Pouso Alegre","2026-05-20","Wey","F","Josiara Bartolomei","Espírito Santo","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-20","H6","F","Mohamed Naeem","São Paulo","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-21","H6","Q","Luiz Brittes","Resende","fb","imediato","ainda_estou_avaliando"],
+["Pouso Alegre","2026-05-21","H6","F","Girley Klier","Teófilo Otoni","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-21","Wey","F","Ercy Gomes","Varginha","ig","em_até_30_dias","ainda_estou_avaliando"],
+["Pouso Alegre","2026-05-21","H9","F","Jarbas Crema","Jacuí","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-21","H9","Q","Luciana Lodi","Belo Horizonte","ig","nos_próximos_15_dias","sim_tenho_entrada"],
+["Pouso Alegre","2026-05-21","H6","Q","Mara Mazzi","São João da Boa Vista","ig","imediato","sim_tenho_entrada"],
+["Pouso Alegre","2026-05-21","H9","Q","Norma Monteiro","Campo Belo","ig","imediato","ainda_estou_avaliando"],
+["Pouso Alegre","2026-05-21","H9","F","Paulo Eduardo","Pouso Alegre","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-21","H6","F","Marcio Franchi","Campos do Jordão","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-21","H6","Q","Edgar Lopes","Indaiatuba","fb","imediato","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-21","H6","M","Luiz Ribeiro","Campos do Jordão","fb","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-22","Tank","F","Marcos Eduardo","Cabo Verde","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-22","H6","M","Alfredo Drummond","1956","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-22","H6","F","Luisa Acerbi","São Sebastião P.","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-22","H6","F","Emanoel Silva","Pouso Alegre","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-22","H9","F","José Humberto","Paracatu","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-22","Tank","M","Leandro Oliveira","Vargem Grande","fb","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-22","H9","Q","Plinio Oliveira","Grão Mogol","ig","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-23","Tank","F","Bargao Edilson","São João da Boa Vista","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-23","Tank","F","Paulo Rainato","Varginha","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-23","H6","F","Mendonça Salgadinhos","Resende","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-23","H6","F","Kalu Trafani","São João da Boa Vista","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-23","Tank","F","Rosana Ferraz","Cambuí","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-23","Wey","M","Roberta","Lavras","ig","em_até_30_dias","sim_tenho_entrada"],
+["Pouso Alegre","2026-05-23","H6","F","Rogerio Cantadori","Oliveira","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-23","H9","F","Fazenda Pedra Bela","Bragança Paulista","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-23","Wey","F","Thalys Augusto","Passo Fundo","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-23","Tank","M","Luiz Henrique","Poços de Caldas","fb","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-23","Wey","Q","Guilherme Barcellos","Divinópolis","ig","imediato","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-23","Wey","F","Bruna Marmore","Camanducaia","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-23","H6","M","Luis Conejo","Primavera do Leste","fb","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-23","H6","F","Thiago Caproni","Poços de Caldas","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-23","H6","F","Dolce Morena","Borda da Mata","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-24","H6","F","Di Bertolucci","São João da Boa Vista","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-24","Ora","Q","Cleber Pereira","Alfenas","fb","imediato","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-24","Ora","F","Rodrigo Petrus","São João da Boa Vista","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-24","Tank","F","Alípio Aguiar","Lavras","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-24","Poer","F","oalmeida_010","Paraisópolis","ig","em_até_30_dias","consigo_financiar_sem_entrada"],
+["Pouso Alegre","2026-05-24","Wey","F","Murilo Campioni","Curitiba","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-24","H6","F","Carol Guimarães","Lavras","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-24","H6","Q","Adriano Barbosa","Poços de Caldas","ig","nos_próximos_15_dias","sim_tenho_entrada"],
+["Pouso Alegre","2026-05-24","Wey","F","Natacha Dias","Mogi Mirim","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-24","Wey","F","Possidônio Ribeiro","Campanha","fb","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-24","H6","M","Fabiano Melo","Poços de Caldas","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-24","Poer","M","Dr Alex Reis","Varginha","ig","em_até_30_dias","sim_tenho_entrada"],
+["Pouso Alegre","2026-05-24","Wey","F","Daniel Saullo","Passa Quatro","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-24","Tank","F","Eliel Junior","São Paulo","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-24","Tank","Q","Dr. Ary Guimarães","Sydney","ig","imediato","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-24","Tank","Q","Rodrigo","Patos de Minas","ig","imediato","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-24","Wey","F","Sergio Godoy","Monte Verde","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-25","Wey","F","Marcos e Letícia","Três Corações","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-25","H9","F","Pérola Moreira","Lorena","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-25","H6","F","Lilian Costa","São Sebastião P.","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-25","H9","Q","Edite Lobo","Belo Horizonte","ig","imediato","consigo_financiar_sem_entrada"],
+["Pouso Alegre","2026-05-25","Tank","F","José Natal","Patos de Minas","ig","apenas_pesquisando",""],
+["Pouso Alegre","2026-05-25","H6","Q","Prof Marcelo Aquino","Belo Horizonte","ig","imediato","sim_tenho_veículo_na_troca"],
+["Pouso Alegre","2026-05-25","H6","M","Ana Lú","Extrema","ig","nos_próximos_15_dias","ainda_estou_avaliando"],
+// ── UBERLÂNDIA ──────────────────────────────────────────────
+["Uberlândia","2026-05-15","Wey","Q","Shopping da Economia","Frutal","ig","imediato","sim_tenho_entrada"],
+["Uberlândia","2026-05-15","Tank","M","Luis De Paiva","Uberaba","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-15","Tank","Q","Marcia Coury","Uberlândia","ig","imediato","sim_tenho_entrada"],
+["Uberlândia","2026-05-15","H6","F","Diogo Rodrigues","Frutal","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-15","Wey","M","Dr. Luis Prampero","Campo Grande","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-16","Poer","F","Ildeu Resende","Pompeu","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-16","Ora","Q","Frederico Faria","Passos","ig","imediato","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-16","Wey","M","Dr. Diogo - Otorrino","Passos","ig","em_até_30_dias","sim_tenho_entrada"],
+["Uberlândia","2026-05-16","Tank","F","Ilka Beatriz","Uberaba","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-16","H6","Q","Bruno Paulo","Araxá","ig","imediato","sim_tenho_entrada"],
+["Uberlândia","2026-05-16","Tank","M","Tom Leal","Bocaiuva","ig","em_até_30_dias","sim_tenho_entrada"],
+["Uberlândia","2026-05-16","H9","F","Carlos Cesar","Uberlândia","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-16","Tank","Q","Tony Andrade","Pará de Minas","ig","nos_próximos_15_dias","sim_tenho_entrada"],
+["Uberlândia","2026-05-17","Poer","Q","Serginho","Botelhos","ig","nos_próximos_15_dias","sim_tenho_entrada"],
+["Uberlândia","2026-05-17","H6","F","Adilberto Cunha","Uberlândia","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-17","H6","M","Luciano","Patos de Minas","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-17","Poer","M","Ademar Silva","Nova Serrana","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-17","H9","Q","Jorge Leandro","Natal","ig","imediato","sim_tenho_entrada"],
+["Uberlândia","2026-05-17","Poer","Q","Fábio Campolina","Pequi","ig","imediato","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-17","Ora","Q","Fabiobarbosa","Mogi Mirim","ig","imediato","sim_tenho_entrada"],
+["Uberlândia","2026-05-17","H6","F","Gidelson Ribeiro","Palmas","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-17","Poer","M","Rafael Fonseca","Uberlândia","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-17","Ora","F","Gonçalo José","Formiga","fb","apenas_pesquisando",""],
+["Uberlândia","2026-05-17","Ora","F","Diego Fidalgo","Uberaba","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-18","Poer","Q","Fred Gloria","Belo Horizonte","ig","imediato","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-18","Wey","F","Leonardo Tarabal","São Gotardo","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-18","Wey","F","Renan Freire","Uberlândia","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-18","H6","M","Tulio Marcal","Divinópolis","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-18","H9","F","Marcel Da Cunha","Patos de Minas","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-18","H6","M","Grupo Stillus","Congonhas","ig","em_até_30_dias","sim_tenho_entrada"],
+["Uberlândia","2026-05-18","Poer","F","Eduardo Poliselli","Curitiba","fb","apenas_pesquisando",""],
+["Uberlândia","2026-05-18","Wey","F","Vinicius Novaes","Uberlândia","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-19","Poer","M","Antônio Pereira","Ataléia","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-19","Wey","F","Reginaldo Duarte","Pitangui","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-19","Wey","F","Felipe Coelho","Montes Claros","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-19","H6","F","Ronan Ribeiro","Campos Altos","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-19","Wey","F","Paula Soares","Uberlândia","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-19","H9","F","Renato Mourthe","Curvelo","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-19","H6","M","Paulo Roberto","Passos","fb","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-19","H6","M","Alfredo Drummond","1956","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-19","Wey","Q","Claudia Morais","Franca","ig","imediato","sim_tenho_entrada"],
+["Uberlândia","2026-05-20","H6","Q","Bruno Vilaça","Santa Luzia","ig","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-20","H9","Q","Wanderson Martins","Brás Pires","ig","imediato","sim_tenho_entrada"],
+["Uberlândia","2026-05-20","Wey","M","Marcos Antonio","Mogi-Guaçu","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-20","H9","F","Fabrício Martins","Brasília","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-20","H6","Q","Gutemberg Pinto","Brasília","ig","nos_próximos_15_dias","sim_tenho_entrada"],
+["Uberlândia","2026-05-20","H6","Q","Alenice Pereira","Rio Brilhante","fb","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-20","H6","F","Paulo Nogues","Vargem Grande","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-20","Poer","M","Wellington Carneiro","Passos","ig","em_até_30_dias","sim_tenho_entrada"],
+["Uberlândia","2026-05-20","H6","F","HUGO VIEIRA","Frutal","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-20","H9","F","Edilson Viotto","Mogi-Guaçu","fb","apenas_pesquisando",""],
+["Uberlândia","2026-05-21","H9","Q","Elisete Castro","Cláudio","ig","imediato","sim_tenho_entrada"],
+["Uberlândia","2026-05-21","Wey","F","Walter Ferolla","Uberlândia","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-21","H6","Q","Weslei Paulo","Bom Despacho","ig","imediato","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-21","H6","F","Claudiney Wilson","Nova Lima","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-21","H9","F","Sergislei Moura","Palmas","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-21","H6","F","Ana Paula Oliveira","Luís Eduardo Magalhães","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-21","Poer","F","Felipe Queiroz","Patrocínio","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-21","H6","Q","Janiel","Divinópolis","ig","imediato","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-21","H6","F","Dr. Henrique Leão","Arcos","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-22","H6","M","Sergio Goulart","Araxá","fb","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-22","Poer","M","Ruan Oliveira","Limeira do Oeste","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-22","H6","F","Marcos Brandao","Mogi Guaçu","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-22","H6","M","Raphael Nery","São Paulo","fb","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-22","H6","Q","THAIS AQUINO","Belo Horizonte","ig","imediato","sim_tenho_entrada"],
+["Uberlândia","2026-05-22","H6","Q","Getúlio Fernandes","Itumbiara","fb","nos_próximos_15_dias","sim_tenho_entrada"],
+["Uberlândia","2026-05-22","Poer","F","Marinho EletroChips","Sete Lagoas","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-23","H6","F","Amilton Vailatti","Santo André","fb","apenas_pesquisando",""],
+["Uberlândia","2026-05-23","Poer","F","Eluisio Antonio","Patos de Minas","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-23","H6","M","Nayma Tesch","Rio Branco","ig","em_até_30_dias","sim_tenho_entrada"],
+["Uberlândia","2026-05-23","Wey","M","Diógenes Campos","Patos de Minas","ig","em_até_30_dias","sim_tenho_entrada"],
+["Uberlândia","2026-05-23","Ora","Q","Evandro","Montes Claros","ig","nos_próximos_15_dias","sim_tenho_entrada"],
+["Uberlândia","2026-05-23","Poer","Q","adilton","Itapagipe","ig","imediato","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-24","Poer","M","Antenor Naves","Oliveira","ig","em_até_30_dias","sim_tenho_entrada"],
+["Uberlândia","2026-05-24","H6","F","Auto Pecas","João Pinheiro","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-24","Poer","M","Ronildo Garcia","Nova Serrana","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-24","Tank","Q","Michel Balech","Iturama","fb","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-24","H6","F","Josue De Paulo","Itabira","fb","apenas_pesquisando",""],
+["Uberlândia","2026-05-24","H6","F","Hm Peças","Uberlândia","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-24","Wey","F","Ercy Grubert","Jardim","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-24","H6","M","Lincoln Leite","Mogi Mirim","ig","em_até_30_dias","sim_tenho_entrada"],
+["Uberlândia","2026-05-24","H9","F","Aline","Brasília","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-24","Wey","Q","Flávia Simões","Uberlândia","ig","imediato","sim_tenho_entrada"],
+["Uberlândia","2026-05-24","H9","F","Arthur Batista","Belo Horizonte","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-24","H6","F","Vradimir Robert","Alfenas","ig","em_até_30_dias","ainda_estou_avaliando"],
+["Uberlândia","2026-05-24","Tank","F","Luciane Gonçalves","Itapagipe","ig","nos_próximos_15_dias","ainda_estou_avaliando"],
+["Uberlândia","2026-05-25","H6","Q","Ursula","Brasília","ig","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-25","H6","M","Murilo Resende","Araguari","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-25","H6","F","Teo Silva","Belo Horizonte","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-25","Poer","Q","Fabiano Zeza","Divinopolis","ig","imediato","sim_tenho_veículo_na_troca"],
+["Uberlândia","2026-05-25","H6","F","Neiton Oliveira","Itumbiara","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-25","Tank","F","Rubens Silveira","Florestal","ig","apenas_pesquisando",""],
+["Uberlândia","2026-05-25","Tank","F","Débora Accorroni","Gov. Valadares","ig","apenas_pesquisando",""],
+// ── IPATINGA ──────────────────────────────────────────────
+["Ipatinga","2026-05-15","Ora","F","Adriano Scota","Ipatinga","ig","apenas_pesquisando",""],
+["Ipatinga","2026-05-17","H9","F","Simone Silva","Ipaba","ig","apenas_pesquisando",""],
+["Ipatinga","2026-05-17","Ora","F","Geraldo Magela","Inhapim","ig","apenas_pesquisando",""],
+["Ipatinga","2026-05-17","H6","F","Abraão Oliveira","Gov. Valadares","ig","apenas_pesquisando",""],
+["Ipatinga","2026-05-18","H9","F","Gilmar Anício","Gov. Valadares","ig","apenas_pesquisando",""],
+["Ipatinga","2026-05-20","Wey","Q","Mario Cunha","Belo Horizonte","ig","imediato","sim_tenho_entrada"],
+["Ipatinga","2026-05-20","Tank","Q","Fabiano Ferreira","Ouro Branco","ig","nos_próximos_15_dias","sim_tenho_veículo_na_troca"],
+["Ipatinga","2026-05-20","H9","Q","Bruno Silva","Contagem","ig","imediato","sim_tenho_veículo_na_troca"],
+["Ipatinga","2026-05-21","H9","F","Mateus Souza","Aguanil","fb","apenas_pesquisando",""],
+["Ipatinga","2026-05-21","H9","Q","Elisete Castro","Cláudio","ig","imediato","sim_tenho_veículo_na_troca"],
+["Ipatinga","2026-05-21","Wey","M","Dr. Diogo Otorrino","Passos","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Ipatinga","2026-05-21","H9","M","Ronaldo Maluf","Belo Horizonte","fb","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Ipatinga","2026-05-22","H6","F","Tarcizio Edson","Belo Horizonte","fb","apenas_pesquisando",""],
+["Ipatinga","2026-05-22","H6","F","Valdeir Souza","Nanuque","fb","apenas_pesquisando",""],
+["Ipatinga","2026-05-22","H9","M","Gustavo","Carlos Chagas","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Ipatinga","2026-05-22","H6","F","Marta dos Santos","Contagem","fb","apenas_pesquisando",""],
+["Ipatinga","2026-05-22","Wey","F","Ivan Rocha","Belo Horizonte","ig","apenas_pesquisando",""],
+["Ipatinga","2026-05-23","H9","M","Lucas Avila","Uberlândia","ig","em_até_30_dias","sim_tenho_veículo_na_troca"],
+["Ipatinga","2026-05-23","H9","Q","Marco Antônio Machado","Capelinha","ig","imediato","sim_tenho_entrada"],
+["Ipatinga","2026-05-23","H9","Q","Evando Esteves","Joaima","ig","imediato","sim_tenho_veículo_na_troca"],
+["Ipatinga","2026-05-23","H9","Q","Tercio Claudino","Tapiratiba","fb","imediato","sim_tenho_veículo_na_troca"],
+["Ipatinga","2026-05-24","H6","F","Roberto","Belo Horizonte","ig","apenas_pesquisando",""],
+["Ipatinga","2026-05-24","H9","Q","Dr. Ridan Alves","Timóteo","ig","imediato","sim_tenho_veículo_na_troca"],
+["Ipatinga","2026-05-24","H9","M","Beto Castro","Teófilo Otoni","ig","em_até_30_dias","sim_tenho_entrada"],
+["Ipatinga","2026-05-25","H9","Q","Alessandro Severino","Carmo do Cajuru","ig","imediato","sim_tenho_veículo_na_troca"],
+];
+
+// ── COLORS ────────────────────────────────────────────────────────────────
+const UCOLS={"Juiz de Fora":"#CC0000","Pouso Alegre":"#d4850a","Uberlândia":"#2563eb","Ipatinga":"#16a34a"};
+const VCOLS={"H6":"#CC0000","H9":"#c05000","Tank":"#d4850a","Poer":"#2563eb","Wey":"#7c3aed","Ora":"#0d9488"};
+const VNAMES={"H6":"Haval H6","H9":"Haval H9","Tank":"Tank 300","Poer":"Poer","Wey":"Wey","Ora":"Ora"};
+const QCOL={"Q":"var(--Q)","M":"var(--M)","F":"var(--F)"};
+const QLBL={"Q":"🔥 Quente","M":"☀️ Morno","F":"❄️ Frio"};
+const TL_LABELS={"imediato":"Imediato","nos_próximos_15_dias":"Próximos 15 dias","em_até_30_dias":"Em até 30 dias","apenas_pesquisando":"Apenas pesquisando","ainda_estou_avaliando":"Ainda avaliando","consigo_financiar_sem_entrada":"Financiar sem entrada"};
+
+let tab='all';
+function setTab(t,el){
+  tab=t;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('a'));
+  el.classList.add('a');
+  render();
+}
+function clearF(){
+  document.getElementById('fd').value='2026-05-15';
+  document.getElementById('ft').value='2026-05-25';
+  document.getElementById('fv').value='';
+  document.getElementById('fq').value='';
+  render();
+}
+function getF(){
+  const fd=document.getElementById('fd').value;
+  const ft=document.getElementById('ft').value;
+  const fv=document.getElementById('fv').value;
+  const fq=document.getElementById('fq').value;
+  return D.filter(d=>{
+    if(tab!=='all'&&d[0]!==tab)return false;
+    if(fd&&d[1]<fd)return false;
+    if(ft&&d[1]>ft)return false;
+    if(fv&&d[2]!==fv)return false;
+    if(fq&&d[3]!==fq)return false;
+    return true;
+  });
+}
+
+function barChart(items,colors,h=130){
+  const mx=Math.max(...items.map(i=>i.v),1);
+  return `<div class="barchart" style="height:${h}px;align-items:flex-end">${items.map((it,i)=>{
+    const bh=Math.max(Math.round(it.v/mx*(h-36)),it.v>0?3:0);
+    const c=Array.isArray(colors)?colors[i%colors.length]:colors;
+    return `<div class="bc"><div class="bv">${it.v}</div><div class="bf" style="height:${bh}px;background:${c}"></div><div class="bl">${it.l}</div></div>`;
+  }).join('')}</div>`;
+}
+
+function donut(data,size=110){
+  const tot=data.reduce((s,d)=>s+d.v,0)||1;
+  let cum=0;const r=44,cx=55,cy=55;
+  function pol(p){const a=p*2*Math.PI-Math.PI/2;return[cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+  const paths=data.map(d=>{
+    if(!d.v)return'';
+    const pct=d.v/tot;
+    const [x1,y1]=pol(cum);cum+=pct;
+    const [x2,y2]=pol(cum);
+    return `<path d="M${cx} ${cy} L${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 ${pct>.5?1:0} 1 ${x2.toFixed(1)} ${y2.toFixed(1)}Z" fill="${d.c}" stroke="#141414" stroke-width="1.5"/>`;
+  }).join('');
+  const legend=data.map(d=>`<div class="dr"><div class="ds" style="background:${d.c}"></div><span class="dn">${d.l}</span><span class="dv" style="color:${d.c}">${d.v}</span><span class="dp">${Math.round(d.v/tot*100)}%</span></div>`).join('');
+  return `<div class="dw"><svg width="${size}" height="${size}" viewBox="0 0 110 110">${paths}<circle cx="${cx}" cy="${cy}" r="26" fill="#141414"/><text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" font-size="16" font-weight="700" fill="#f0f0f0" font-family="Barlow Condensed,sans-serif">${tot}</text></svg><div class="dl">${legend}</div></div>`;
+}
+
+function render(){
+  const f=getF();
+  const tot=f.length,Q=f.filter(d=>d[3]==='Q').length,M=f.filter(d=>d[3]==='M').length,F=f.filter(d=>d[3]==='F').length;
+  const vdata=["H6","H9","Tank","Poer","Wey","Ora"].map(v=>({l:v,v:f.filter(d=>d[2]===v).length}));
+  const topV=vdata.sort((a,b)=>b.v-a.v)[0]?.l||'—';
+  vdata.sort((a,b)=>b.v-a.v);
+
+  // KPIs
+  const kpis=[
+    {l:'Total de Leads',v:tot,c:'var(--red)',s:tab==='all'?'4 unidades · 11 dias':''},
+    {l:'Leads Quentes',v:Q,c:'var(--Q)',s:tot?Math.round(Q/tot*100)+'% do total':''},
+    {l:'Leads Mornos',v:M,c:'var(--M)',s:tot?Math.round(M/tot*100)+'% do total':''},
+    {l:'Leads Frios',v:F,c:'var(--F)',s:tot?Math.round(F/tot*100)+'% do total':''},
+    {l:'Modelo Líder',v:VNAMES[topV]||'—',c:VCOLS[topV]||'var(--red)',s:`${vdata[0]?.v||0} leads`},
+  ];
+  document.getElementById('kpis').innerHTML=kpis.map(k=>`<div class="kpi" style="--kc:${k.c}"><div class="kl">${k.l}</div><div class="kv" style="color:${k.c}">${k.v}</div><div class="ks">${k.s}</div></div>`).join('');
+
+  let html='';
+
+  if(tab==='all'){
+    // By unit bar + quality donut
+    const byU=['Juiz de Fora','Pouso Alegre','Uberlândia','Ipatinga'].map((u,i)=>({l:u==='Juiz de Fora'?'JF':u==='Pouso Alegre'?'PA':u==='Uberlândia'?'UBE':'IPA',v:f.filter(d=>d[0]===u).length}));
+    const qDonut=[{l:'Quente',v:Q,c:'var(--Q)'},{l:'Morno',v:M,c:'var(--M)'},{l:'Frio',v:F,c:'var(--F)'}];
+    html+=`<div class="g2"><div class="panel"><div class="ptit">Leads por Unidade</div>${barChart(byU,Object.values(UCOLS),130)}</div><div class="panel"><div class="ptit">Qualidade dos Leads</div>${donut(qDonut)}</div></div>`;
+
+    // Vehicle table
+    const vAll=["H6","H9","Tank","Poer","Wey","Ora"].map(v=>{
+      const vl=f.filter(d=>d[2]===v);
+      const mx=Math.max(...["H6","H9","Tank","Poer","Wey","Ora"].map(x=>f.filter(d=>d[2]===x).length),1);
+      return{v,n:vl.length,Q:vl.filter(d=>d[3]==='Q').length,M:vl.filter(d=>d[3]==='M').length,F:vl.filter(d=>d[3]==='F').length,mx};
+    }).sort((a,b)=>b.n-a.n);
+    const mxV=Math.max(...vAll.map(v=>v.n),1);
+    html+=`<div class="panel" style="margin-bottom:12px"><div class="ptit">Desempenho por Modelo</div><div style="overflow-x:auto"><table class="vt"><thead><tr><th>Modelo</th><th style="min-width:100px">Distribuição</th><th>Total</th><th>🔥 Q</th><th>☀️ M</th><th>❄️ F</th></tr></thead><tbody>${vAll.map(v=>`<tr><td><div class="vnm"><span class="vdot" style="background:${VCOLS[v.v]}"></span>${VNAMES[v.v]}</div></td><td><div class="vtbar"><div class="vtbt"><div class="vtbf" style="width:${Math.round(v.n/mxV*100)}%;background:${VCOLS[v.v]}"></div></div></div></td><td style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:${VCOLS[v.v]}">${v.n}</td><td style="color:var(--Q);font-weight:700">${v.Q}</td><td style="color:var(--M);font-weight:700">${v.M}</td><td style="color:var(--F);font-weight:700">${v.F}</td></tr>`).join('')}</tbody></table></div></div>`;
+
+    // Unit cards
+    const units=['Juiz de Fora','Pouso Alegre','Uberlândia','Ipatinga'];
+    const ucards=units.map((u,i)=>{
+      const ul=f.filter(d=>d[0]===u);
+      const uQ=ul.filter(d=>d[3]==='Q').length,uM=ul.filter(d=>d[3]==='M').length,uF=ul.filter(d=>d[3]==='F').length;
+      const cnt={};ul.forEach(d=>cnt[d[2]]=(cnt[d[2]]||0)+1);
+      const topV2=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0];
+      const col=Object.values(UCOLS)[i];
+      return `<div class="uc" style="--uc:${col}">
+        <div class="uh"><div class="un">${u}</div><div class="ucount">${ul.length}</div></div>
+        <div class="uq">
+          <div class="uqp" style="background:var(--Qbg)"><span class="uqn" style="color:var(--Q)">${uQ}</span><span class="uql" style="color:var(--Q)">Quentes</span></div>
+          <div class="uqp" style="background:var(--Mbg)"><span class="uqn" style="color:var(--M)">${uM}</span><span class="uql" style="color:var(--M)">Mornos</span></div>
+          <div class="uqp" style="background:var(--Fbg)"><span class="uqn" style="color:var(--F)">${uF}</span><span class="uql" style="color:var(--F)">Frios</span></div>
+        </div>
+        <div class="uf">Modelo + demandado: <strong style="color:var(--tx2)">${topV2?VNAMES[topV2[0]]+' ('+topV2[1]+')':'—'}</strong>
+          ${ul.length?`<div class="ubr"><div style="flex:${uQ};background:var(--Q)"></div><div style="flex:${uM};background:var(--M)"></div><div style="flex:${uF};background:var(--F)"></div></div>`:''}
+        </div>
+      </div>`;
+    }).join('');
+    html+=`<div class="ug" style="margin-bottom:12px">${ucards}</div>`;
+
+  } else {
+    // Single unit view
+    const vDonut=["H6","H9","Tank","Poer","Wey","Ora"].map(v=>({l:VNAMES[v],v:f.filter(d=>d[2]===v).length,c:VCOLS[v]})).filter(d=>d.v>0);
+    const qDonut=[{l:'Quente',v:Q,c:'var(--Q)'},{l:'Morno',v:M,c:'var(--M)'},{l:'Frio',v:F,c:'var(--F)'}];
+    html+=`<div class="g2"><div class="panel"><div class="ptit">Leads por Modelo</div>${barChart(["H6","H9","Tank","Poer","Wey","Ora"].map(v=>({l:v,v:f.filter(d=>d[2]===v).length})),Object.values(VCOLS),130)}</div><div class="panel"><div class="ptit">Qualidade</div>${donut(qDonut)}</div></div>`;
+
+    // Timeline breakdown
+    const tl_order=['imediato','nos_próximos_15_dias','em_até_30_dias','apenas_pesquisando','ainda_estou_avaliando','consigo_financiar_sem_entrada'];
+    const tlData=tl_order.map(t=>({l:TL_LABELS[t]||t,v:f.filter(d=>d[7]===t).length,c:t==='imediato'?'var(--Q)':t.includes('15')?'#e8a020':t.includes('30')?'#a0a020':'var(--F)'})).filter(d=>d.v>0);
+    const mxTL=Math.max(...tlData.map(d=>d.v),1);
+    const tlHTML=`<div class="tb">${tlData.map(t=>`<div class="tbr"><div class="tbl">${t.l}</div><div class="tbt"><div class="tbf" style="width:${Math.round(t.v/mxTL*100)}%;background:${t.c}"></div></div><div class="tbv" style="color:${t.c}">${t.v}</div></div>`).join('')}</div>`;
+    html+=`<div class="panel" style="margin-bottom:12px"><div class="ptit">Intenção de Compra</div>${tlHTML}</div>`;
+  }
+
+  // LEAD TABLE
+  const rows=f.map((d,i)=>{
+    const q=d[3],dt=d[1].split('-').reverse().slice(0,2).join('/');
+    return `<tr>
+      <td style="color:var(--tx3);font-family:'Barlow Condensed',sans-serif">${String(i+1).padStart(3,'0')}</td>
+      <td style="font-family:'Barlow Condensed',sans-serif;letter-spacing:.3px">${dt}</td>
+      ${tab==='all'?`<td style="color:${UCOLS[d[0]]||'var(--tx)'};font-family:'Barlow Condensed',sans-serif;font-weight:600">${d[0]}</td>`:''}
+      <td><span style="display:flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:${VCOLS[d[2]]||'var(--tx)'}">${VNAMES[d[2]]||d[2]}</span></td>
+      <td><span class="pill p${q}">${q==='Q'?'🔥':q==='M'?'☀️':'❄️'} ${q==='Q'?'Quente':q==='M'?'Morno':'Frio'}</span></td>
+      <td style="color:var(--tx);font-weight:500;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d[4]}</td>
+      <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d[5]}</td>
+      <td><span style="font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:${d[6]==='ig'?'#cc00aa':'#1877f2'}">${d[6]==='ig'?'IG':'FB'}</span></td>
+    </tr>`;
+  }).join('');
+
+  const thUnit=tab==='all'?'<th>Unidade</th>':'';
+  html+=`<div class="tw"><div class="tscroll"><table class="lt"><thead><tr><th>#</th><th>Data</th>${thUnit}<th>Modelo</th><th>Qualidade</th><th>Lead</th><th>Cidade</th><th>Canal</th></tr></thead><tbody>${rows.length?rows:'<tr><td colspan="8" style="padding:24px;text-align:center;color:var(--tx3)">Nenhum lead encontrado.</td></tr>'}</tbody></table></div>${f.length?`<div class="tfooter"><span>${f.length} lead${f.length!==1?'s':''}</span><span>🔥 ${Q} · ☀️ ${M} · ❄️ ${F}</span></div>`:''}</div>`;
+
+  html+=`<div class="qleg"><div><span style="background:var(--Q)"></span>Quente = Imediato ou Próximos 15 dias + entrada</div><div><span style="background:var(--M)"></span>Morno = Próximos 15 dias (sem entrada) ou Em até 30 dias + entrada</div><div><span style="background:var(--F)"></span>Frio = Apenas pesquisando / Avaliando / Sem entrada</div></div>`;
+
+  document.getElementById('content').innerHTML=html;
+}
+
+['fd','ft','fv','fq'].forEach(id=>document.getElementById(id).addEventListener('change',render));
+render();
+</script>
+</body>
+</html>
