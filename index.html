@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>GWM Euroville · Leads Live</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --red:#CC0000;--bg:#0d0d0d;--bg2:#141414;--bg3:#1a1a1a;--bg4:#222;
+  --brd:#252525;--brd2:#333;--tx:#f0f0f0;--tx2:#c0c0c0;--tx3:#909090;
+  --Q:#CC0000;--M:#d4850a;--F:#4b8ef0;
+  --Qbg:rgba(204,0,0,.12);--Mbg:rgba(212,133,10,.12);--Fbg:rgba(75,142,240,.12)
+}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--tx);font-size:13px}
+
+/* TOP BAR */
+.bar{background:var(--bg2);border-bottom:1px solid var(--brd);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:99;gap:12px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px}
+.badge{background:var(--red);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;padding:4px 11px;clip-path:polygon(7px 0%,100% 0%,calc(100% - 7px) 100%,0% 100%)}
+.logo-t{font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--tx2)}
+.bar-right{display:flex;align-items:center;gap:10px}
+.live-pill{display:flex;align-items:center;gap:6px;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);border-radius:20px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#22c55e}
+.dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.ts{font-size:10px;color:var(--tx3);font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;white-space:nowrap}
+.btn-ref{background:transparent;border:1px solid var(--brd2);color:var(--tx2);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:4px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s}
+.btn-ref:hover{border-color:var(--red);color:var(--red)}
+.btn-ref.spin svg{animation:rotate .8s linear infinite}
+@keyframes rotate{to{transform:rotate(360deg)}}
+
+/* LOADING */
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;gap:14px;color:var(--tx3)}
+.spinner{width:32px;height:32px;border:2px solid var(--brd2);border-top-color:var(--red);border-radius:50%;animation:rotate .7s linear infinite}
+.loading-text{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:1px;text-transform:uppercase}
+
+/* ERROR */
+.err-box{background:rgba(204,0,0,.08);border:1px solid rgba(204,0,0,.25);border-left:3px solid var(--red);border-radius:4px;padding:14px 16px;margin:16px 0;font-size:12px;color:#ff8080;line-height:1.6}
+
+/* FILTERS */
+.wrap{padding:18px 24px}
+.filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.fu{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx2)}
+select,input[type=date]{background:var(--bg3);border:1px solid var(--brd2);color:var(--tx);font-family:'Barlow',sans-serif;font-size:12px;padding:6px 10px;border-radius:4px;cursor:pointer}
+select:focus,input:focus{outline:none;border-color:var(--red)}
+.btn-c{background:transparent;border:1px solid var(--brd2);color:var(--tx2);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;border-radius:4px;cursor:pointer;margin-left:auto}
+.btn-c:hover{border-color:var(--red);color:var(--red)}
+
+/* TABS */
+.tabs{display:flex;gap:3px;margin-bottom:16px;border-bottom:1px solid var(--brd)}
+.tab{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;padding:9px 18px;border:none;background:transparent;color:var(--tx2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s}
+.tab.a{color:var(--red);border-bottom-color:var(--red)}
+.tab:hover:not(.a){color:var(--tx)}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.kpi{background:var(--bg2);border:1px solid var(--brd);border-radius:5px;padding:14px 16px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kc,var(--red))}
+.kl{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--tx2);margin-bottom:8px}
+.kv{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;line-height:1}
+.ks{font-size:10px;color:var(--tx2);margin-top:4px}
+
+/* PANELS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.panel{background:var(--bg2);border:1px solid var(--brd);border-radius:5px;padding:16px}
+.ptit{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--tx2);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.ptit::before{content:'';width:3px;height:12px;background:var(--red);border-radius:1px;flex-shrink:0}
+
+/* PILLS */
+.pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:3px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
+.pQ{background:var(--Qbg);color:var(--Q)}
+.pM{background:var(--Mbg);color:var(--M)}
+.pF{background:var(--Fbg);color:var(--F)}
+
+/* BAR CHART */
+.barchart{display:flex;align-items:flex-end;gap:6px}
+.bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bv{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:var(--tx)}
+.bf{width:100%;border-radius:2px 2px 0 0;min-height:3px;transition:height .5s ease}
+.bl{font-size:9px;color:var(--tx2);text-align:center;line-height:1.3;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.3px}
+
+/* DONUT */
+.dw{display:flex;align-items:center;gap:14px}
+.dl{display:flex;flex-direction:column;gap:8px;flex:1}
+.dr{display:flex;align-items:center;gap:7px}
+.ds{width:7px;height:7px;border-radius:2px;flex-shrink:0}
+.dn{font-size:12px;color:var(--tx2);flex:1}
+.dv{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700}
+.dp{font-size:10px;color:var(--tx2);min-width:30px;text-align:right}
+
+/* TIMELINE */
+.tb{display:flex;flex-direction:column;gap:7px}
+.tbr{display:flex;align-items:center;gap:8px}
+.tbl{font-size:11px;color:var(--tx);width:160px;flex-shrink:0;text-align:right}
+.tbt{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.tbf{height:100%;border-radius:3px}
+.tbv{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;min-width:28px;text-align:right;color:var(--tx)}
+
+/* UNIT CARDS */
+.ug{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.uc{background:var(--bg2);border:1px solid var(--brd);border-radius:5px;padding:16px;position:relative;overflow:hidden}
+.uc::after{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--uc)}
+.uh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;padding-left:12px}
+.un{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700}
+.ucount{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;line-height:1;color:var(--uc)}
+.uq{display:flex;gap:6px;margin-bottom:12px;padding-left:12px}
+.uqp{flex:1;border-radius:4px;padding:7px 8px;text-align:center}
+.uqn{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;display:block;line-height:1}
+.uql{font-size:9px;letter-spacing:.8px;text-transform:uppercase;opacity:.8}
+.uf{padding-left:12px;border-top:1px solid var(--brd);padding-top:9px;font-size:11px;color:var(--tx2)}
+.ubr{margin-top:8px;height:4px;border-radius:2px;overflow:hidden;display:flex;gap:1px}
+
+/* VEHICLE TABLE */
+.vt{width:100%;border-collapse:collapse}
+.vt td{padding:8px 0;border-top:1px solid var(--brd);vertical-align:middle}
+.vt td:not(:first-child){text-align:right;font-family:'Barlow Condensed',sans-serif}
+.vt th{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx2);padding:0 0 10px;text-align:left;font-weight:500}
+.vt th:not(:first-child){text-align:right}
+.vnm{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;display:flex;align-items:center;gap:7px}
+.vdot{width:7px;height:7px;border-radius:2px;flex-shrink:0}
+.vtbt{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:3px;width:80px}
+.vtbf{height:100%;border-radius:2px}
+
+/* LEAD TABLE */
+.tw{background:var(--bg2);border:1px solid var(--brd);border-radius:5px;overflow:hidden}
+.tscroll{overflow-x:auto}
+table.lt{width:100%;border-collapse:collapse;font-size:12px}
+table.lt thead tr{background:var(--bg3);border-bottom:2px solid var(--brd)}
+table.lt th{padding:9px 12px;text-align:left;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx2);font-weight:500;white-space:nowrap}
+table.lt td{padding:8px 12px;border-bottom:1px solid var(--brd);color:var(--tx2)}
+table.lt tr:hover td{background:var(--bg3)}
+table.lt tr:last-child td{border-bottom:none}
+.tfooter{padding:8px 12px;border-top:1px solid var(--brd);display:flex;justify-content:space-between;font-size:11px;color:var(--tx2);font-family:'Barlow Condensed',sans-serif}
+
+/* QUALITY LEGEND */
+.qleg{display:flex;gap:14px;margin-top:10px;font-size:10px;color:var(--tx2);flex-wrap:wrap}
+.qleg div{display:flex;align-items:center;gap:5px}
+.qleg span{width:7px;height:7px;border-radius:1px;display:inline-block;flex-shrink:0}
+
+::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--brd2)}::-webkit-scrollbar-thumb:hover{background:var(--red)}
+@media(max-width:800px){.kpis{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr}.ug{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="logo">
+    <div class="badge">GWM</div>
+    <div class="logo-t"><span style="color:var(--tx)">Euroville</span> · Leads Formulário Meta</div>
+  </div>
+  <div class="bar-right">
+    <span class="ts" id="ts">Conectando...</span>
+    <button class="btn-ref" id="btnRef" onclick="loadData()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      Atualizar
+    </button>
+    <div class="live-pill"><div class="dot"></div>Live · Auto 5min</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="filters">
+    <span class="fu">Período</span>
+    <input type="date" id="fd"/>
+    <span style="color:var(--brd2);font-size:14px">—</span>
+    <input type="date" id="ft"/>
+    <span class="fu" style="margin-left:8px">Veículo</span>
+    <select id="fv">
+      <option value="">Todos</option>
+      <option>H6</option><option>H9</option><option>Tank</option>
+      <option>Poer</option><option>Wey</option><option>Ora</option>
+    </select>
+    <span class="fu">Qualidade</span>
+    <select id="fq">
+      <option value="">Todas</option>
+      <option value="Q">🔥 Quente</option>
+      <option value="M">☀️ Morno</option>
+      <option value="F">❄️ Frio</option>
+    </select>
+    <button class="btn-c" onclick="clearF()">↺ Limpar</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab a" onclick="setTab('all',this)">Todas</button>
+    <button class="tab" onclick="setTab('Juiz de Fora',this)">Juiz de Fora <span id="cnt-jf" style="font-size:10px;opacity:.6"></span></button>
+    <button class="tab" onclick="setTab('Pouso Alegre',this)">Pouso Alegre <span id="cnt-pa" style="font-size:10px;opacity:.6"></span></button>
+    <button class="tab" onclick="setTab('Uberlândia',this)">Uberlândia <span id="cnt-ub" style="font-size:10px;opacity:.6"></span></button>
+    <button class="tab" onclick="setTab('Ipatinga',this)">Ipatinga <span id="cnt-ip" style="font-size:10px;opacity:.6"></span></button>
+  </div>
+
+  <div id="kpis" class="kpis"></div>
+  <div id="content"><div class="loading"><div class="spinner"></div><div class="loading-text">Conectando ao Google Sheets...</div></div></div>
+</div>
+
+<script>
+// ── CONFIGURAÇÃO ──────────────────────────────────────────────────────────
+const SHEETS = {
+  'Juiz de Fora': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjswaRcCYMoMFtvBFe8n9i1KCL6HEOeB9yioSnE3VFK4hb356pSznvEY_4lDEJagm_0YxxoGJlaAnY/pub?gid=235713049&single=true&output=csv',
+  'Pouso Alegre': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjswaRcCYMoMFtvBFe8n9i1KCL6HEOeB9yioSnE3VFK4hb356pSznvEY_4lDEJagm_0YxxoGJlaAnY/pub?gid=1099704196&single=true&output=csv',
+  'Uberlândia':   'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjswaRcCYMoMFtvBFe8n9i1KCL6HEOeB9yioSnE3VFK4hb356pSznvEY_4lDEJagm_0YxxoGJlaAnY/pub?gid=575499905&single=true&output=csv',
+  'Ipatinga':     'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjswaRcCYMoMFtvBFe8n9i1KCL6HEOeB9yioSnE3VFK4hb356pSznvEY_4lDEJagm_0YxxoGJlaAnY/pub?gid=2115399671&single=true&output=csv'
+};
+
+const UCOLS = {'Juiz de Fora':'#CC0000','Pouso Alegre':'#d4850a','Uberlândia':'#4b8ef0','Ipatinga':'#16a34a'};
+const VCOLS = {H6:'#CC0000',H9:'#c05000',Tank:'#d4850a',Poer:'#4b8ef0',Wey:'#7c3aed',Ora:'#0d9488'};
+const VNAMES = {H6:'Haval H6',H9:'Haval H9',Tank:'Tank 300',Poer:'Poer',Wey:'Wey',Ora:'Ora'};
+const TL_LABELS = {
+  'imediato':'Imediato',
+  'nos_próximos_15_dias':'Próximos 15 dias',
+  'em_até_30_dias':'Em até 30 dias',
+  'apenas_pesquisando':'Apenas pesquisando',
+  'ainda_estou_avaliando':'Ainda avaliando',
+  'consigo_financiar_sem_entrada':'Financiar sem entrada'
+};
+
+// ── CSV PARSER ────────────────────────────────────────────────────────────
+function parseCSV(text) {
+  const rows = [];
+  const lines = text.replace(/\r/g,'').split('\n');
+  for(const line of lines){
+    if(!line.trim()) continue;
+    const row = [];
+    let cur = '', inQ = false;
+    for(let i=0;i<line.length;i++){
+      if(line[i]==='"'){ inQ=!inQ; continue; }
+      if(line[i]===','&&!inQ){ row.push(cur.trim()); cur=''; continue; }
+      cur+=line[i];
+    }
+    row.push(cur.trim());
+    rows.push(row);
+  }
+  return rows;
+}
+
+// ── QUALITY ────────────────────────────────────────────────────────────────
+function classify(timeline, entrada) {
+  const t=(timeline||'').toLowerCase();
+  const e=(entrada||'').toLowerCase();
+  const hasSim = e.includes('sim');
+  if(t.includes('imediato')) return 'Q';
+  if(t.includes('próximos_15')||t.includes('proximos_15')){
+    return hasSim ? 'Q' : 'M';
+  }
+  if(t.includes('30')){
+    return hasSim ? 'M' : 'F';
+  }
+  return 'F';
+}
+
+function normV(v){
+  v=(v||'').toLowerCase().replace(/\s/g,'_');
+  if(v.includes('h6')||v.includes('hev2')) return 'H6';
+  if(v.includes('h9')) return 'H9';
+  if(v.includes('tank')) return 'Tank';
+  if(v.includes('poer')) return 'Poer';
+  if(v.includes('wey')) return 'Wey';
+  if(v.includes('ora')) return 'Ora';
+  return 'Outros';
+}
+
+// ── FETCH & PARSE ─────────────────────────────────────────────────────────
+let ALL_DATA = [];
+let tab = 'all';
+
+async function fetchSheet(unit, url) {
+  // CORS proxies — tenta em sequência até um funcionar
+  const proxies = [
+    u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+    u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+    u => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
+  ];
+
+  let text = null;
+  let lastErr = null;
+
+  for(const proxy of proxies){
+    try{
+      const res = await fetch(proxy(url), {cache:'no-cache'});
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      text = await res.text();
+      if(text && text.includes(',')) break; // parece CSV válido
+    } catch(e){ lastErr = e; text = null; }
+  }
+
+  if(!text) throw new Error(`Não foi possível carregar ${unit}: ${lastErr?.message||'erro desconhecido'}`);
+  const rows = parseCSV(text);
+  if(rows.length < 2) return [];
+
+  // detect header to find column indices
+  const hdr = rows[0].map(h=>h.toLowerCase());
+  const iDate    = hdr.findIndex(h=>h.includes('created_time'));
+  const iPlatform= hdr.findIndex(h=>h==='platform');
+  const iVehicle = hdr.findIndex(h=>h.includes('veículo')&&h.includes('interesse'));
+  const iTimeline= hdr.findIndex(h=>h.includes('pretende'));
+  const iEntrada = hdr.findIndex(h=>h.includes('possui')||( h.includes('entrada')&&h.includes('disponí')));
+  const iName    = hdr.findIndex(h=>h==='full_name');
+  const iCity    = hdr.findIndex(h=>h==='city');
+
+  const leads = [];
+  for(let i=1;i<rows.length;i++){
+    const r = rows[i];
+    if(!r[iDate]) continue;
+    const date = (r[iDate]||'').substring(0,10);
+    const vehicle  = normV(r[iVehicle]);
+    const timeline = (r[iTimeline]||'').toLowerCase().trim();
+    const entrada  = (r[iEntrada]||'').toLowerCase().trim();
+    leads.push({
+      unit,
+      date,
+      vehicle,
+      quality: classify(timeline, entrada),
+      name:    (r[iName]||'').substring(0,30),
+      city:    (r[iCity]||'').substring(0,25),
+      platform:(r[iPlatform]||'').toLowerCase(),
+      timeline,
+      entrada
+    });
+  }
+  return leads;
+}
+
+async function loadData() {
+  const btn = document.getElementById('btnRef');
+  btn.classList.add('spin');
+  const isFirstLoad = ALL_DATA.length === 0;
+  if(isFirstLoad){
+    document.getElementById('content').innerHTML = `<div class="loading"><div class="spinner"></div><div class="loading-text">Conectando ao Google Sheets...</div></div>`;
+    document.getElementById('kpis').innerHTML = '';
+  } else {
+    // auto-refresh silencioso — apenas atualiza o indicador
+    const ts = document.getElementById('ts');
+    if(ts) ts.innerHTML = '<span style="color:var(--M)">↻ Atualizando...</span>';
+  }
+
+  try {
+    const results = await Promise.allSettled(
+      Object.entries(SHEETS).map(([unit,url]) => fetchSheet(unit,url))
+    );
+
+    ALL_DATA = [];
+    const errors = [];
+    results.forEach((r,i) => {
+      const unit = Object.keys(SHEETS)[i];
+      if(r.status==='fulfilled') ALL_DATA.push(...r.value);
+      else errors.push(`${unit}: ${r.reason.message}`);
+    });
+
+    // set date range based on data
+    if(ALL_DATA.length>0){
+      const dates = ALL_DATA.map(d=>d.date).filter(Boolean).sort();
+      const fd = document.getElementById('fd');
+      const ft = document.getElementById('ft');
+      if(!fd.value) fd.value = dates[0];
+      if(!ft.value) ft.value = dates[dates.length-1];
+    }
+
+    // update tab counts
+    ['Juiz de Fora','Pouso Alegre','Uberlândia','Ipatinga'].forEach((u,i) => {
+      const ids=['cnt-jf','cnt-pa','cnt-ub','cnt-ip'];
+      const cnt = ALL_DATA.filter(d=>d.unit===u).length;
+      const el = document.getElementById(ids[i]);
+      if(el) el.textContent = cnt ? `(${cnt})` : '';
+    });
+
+    // timestamp handled by countdown
+
+    if(errors.length){
+      document.getElementById('content').innerHTML =
+        `<div class="err-box"><strong>⚠ Erro ao carregar:</strong> ${errors.join(' · ')}<br>Verifique sua conexão com a internet e tente novamente.</div>`;
+    }
+
+    render();
+    startCountdown();
+  } catch(e) {
+    document.getElementById('content').innerHTML =
+      `<div class="err-box"><strong>⚠ Falha na conexão:</strong> ${e.message}<br>Verifique sua conexão e se as planilhas estão publicadas na web.</div>`;
+  } finally {
+    btn.classList.remove('spin');
+  }
+}
+
+// ── FILTERS ───────────────────────────────────────────────────────────────
+function getFiltered(){
+  const fd = document.getElementById('fd').value;
+  const ft = document.getElementById('ft').value;
+  const fv = document.getElementById('fv').value;
+  const fq = document.getElementById('fq').value;
+  return ALL_DATA.filter(d=>{
+    if(tab!=='all'&&d.unit!==tab) return false;
+    if(fd&&d.date<fd) return false;
+    if(ft&&d.date>ft) return false;
+    if(fv&&d.vehicle!==fv) return false;
+    if(fq&&d.quality!==fq) return false;
+    return true;
+  });
+}
+
+function setTab(t,el){
+  tab=t;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('a'));
+  el.classList.add('a');
+  render();
+}
+
+function clearF(){
+  if(ALL_DATA.length>0){
+    const dates=ALL_DATA.map(d=>d.date).filter(Boolean).sort();
+    document.getElementById('fd').value=dates[0];
+    document.getElementById('ft').value=dates[dates.length-1];
+  }
+  document.getElementById('fv').value='';
+  document.getElementById('fq').value='';
+  render();
+}
+
+// ── CHARTS ────────────────────────────────────────────────────────────────
+function barChart(items,colors,h=130){
+  const mx=Math.max(...items.map(i=>i.v),1);
+  return `<div class="barchart" style="height:${h}px;align-items:flex-end">${
+    items.map((it,i)=>{
+      const bh=Math.max(Math.round(it.v/mx*(h-38)),it.v>0?3:0);
+      const c=Array.isArray(colors)?colors[i%colors.length]:colors;
+      return `<div class="bc"><div class="bv">${it.v}</div><div class="bf" style="height:${bh}px;background:${c}"></div><div class="bl">${it.l}</div></div>`;
+    }).join('')
+  }</div>`;
+}
+
+function donut(data,size=110){
+  const tot=data.reduce((s,d)=>s+d.v,0)||1;
+  let cum=0; const r=44,cx=55,cy=55;
+  const pol=p=>{const a=p*2*Math.PI-Math.PI/2;return[cx+r*Math.cos(a),cy+r*Math.sin(a)];};
+  const paths=data.map(d=>{
+    if(!d.v)return'';
+    const pct=d.v/tot;
+    const[x1,y1]=pol(cum); cum+=pct; const[x2,y2]=pol(cum);
+    return`<path d="M${cx} ${cy} L${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 ${pct>.5?1:0} 1 ${x2.toFixed(1)} ${y2.toFixed(1)}Z" fill="${d.c}" stroke="#141414" stroke-width="1.5"/>`;
+  }).join('');
+  const legend=data.map(d=>`<div class="dr"><div class="ds" style="background:${d.c}"></div><span class="dn">${d.l}</span><span class="dv" style="color:${d.c}">${d.v}</span><span class="dp">${Math.round(d.v/tot*100)}%</span></div>`).join('');
+  return`<div class="dw"><svg width="${size}" height="${size}" viewBox="0 0 110 110">${paths}<circle cx="${cx}" cy="${cy}" r="26" fill="#141414"/><text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" font-size="15" font-weight="700" fill="#f0f0f0" font-family="Barlow Condensed,sans-serif">${tot}</text></svg><div class="dl">${legend}</div></div>`;
+}
+
+// ── RENDER ─────────────────────────────────────────────────────────────────
+function render(){
+  if(!ALL_DATA.length) return;
+  const f = getFiltered();
+  const Q=f.filter(d=>d.quality==='Q').length;
+  const M=f.filter(d=>d.quality==='M').length;
+  const F=f.filter(d=>d.quality==='F').length;
+  const tot=f.length;
+
+  const vCounts=[...Object.keys(VCOLS)].map(v=>({k:v,n:f.filter(d=>d.vehicle===v).length}));
+  const topV=(vCounts.sort((a,b)=>b.n-a.n)[0]?.k)||'—';
+
+  // KPIs
+  document.getElementById('kpis').innerHTML=[
+    {l:'Total de Leads',v:tot,c:'var(--red)',s:tab==='all'?'4 unidades':''},
+    {l:'Leads Quentes',v:Q,c:'var(--Q)',s:tot?Math.round(Q/tot*100)+'% do total':''},
+    {l:'Leads Mornos',v:M,c:'var(--M)',s:tot?Math.round(M/tot*100)+'% do total':''},
+    {l:'Leads Frios',v:F,c:'var(--F)',s:tot?Math.round(F/tot*100)+'% do total':''},
+    {l:'Modelo Líder',v:VNAMES[topV]||'—',c:VCOLS[topV]||'var(--red)',s:vCounts[0]?.n?`${vCounts[0].n} leads`:''},
+  ].map(k=>`<div class="kpi" style="--kc:${k.c}"><div class="kl">${k.l}</div><div class="kv" style="color:${k.c}">${k.v}</div><div class="ks">${k.s}</div></div>`).join('');
+
+  let html='';
+  const vKeys=Object.keys(VCOLS);
+
+  if(tab==='all'){
+    // Unit bar + quality donut
+    const byU=['Juiz de Fora','Pouso Alegre','Uberlândia','Ipatinga'].map((u,i)=>({l:u==='Juiz de Fora'?'JF':u==='Pouso Alegre'?'PA':u==='Uberlândia'?'UBE':'IPA',v:f.filter(d=>d.unit===u).length}));
+    html+=`<div class="g2">
+      <div class="panel"><div class="ptit">Leads por Unidade</div>${barChart(byU,Object.values(UCOLS),130)}</div>
+      <div class="panel"><div class="ptit">Qualidade dos Leads</div>${donut([{l:'Quente',v:Q,c:'var(--Q)'},{l:'Morno',v:M,c:'var(--M)'},{l:'Frio',v:F,c:'var(--F)'}])}</div>
+    </div>`;
+
+    // Vehicle table
+    const vData=vKeys.map(v=>{const vl=f.filter(d=>d.vehicle===v);return{v,n:vl.length,Q:vl.filter(d=>d.quality==='Q').length,M:vl.filter(d=>d.quality==='M').length,F:vl.filter(d=>d.quality==='F').length};}).sort((a,b)=>b.n-a.n);
+    const mxV=Math.max(...vData.map(v=>v.n),1);
+    html+=`<div class="panel" style="margin-bottom:12px"><div class="ptit">Desempenho por Modelo</div>
+      <div style="overflow-x:auto"><table class="vt"><thead><tr><th>Modelo</th><th style="min-width:90px">Dist.</th><th>Total</th><th>🔥Q</th><th>☀️M</th><th>❄️F</th></tr></thead>
+      <tbody>${vData.map(v=>`<tr>
+        <td><div class="vnm"><span class="vdot" style="background:${VCOLS[v.v]}"></span>${VNAMES[v.v]}</div></td>
+        <td><div class="vtbt"><div class="vtbf" style="width:${Math.round(v.n/mxV*100)}%;background:${VCOLS[v.v]}"></div></div></td>
+        <td style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:${VCOLS[v.v]}">${v.n}</td>
+        <td style="color:var(--Q);font-weight:700">${v.Q}</td>
+        <td style="color:var(--M);font-weight:700">${v.M}</td>
+        <td style="color:var(--F);font-weight:700">${v.F}</td>
+      </tr>`).join('')}</tbody></table></div></div>`;
+
+    // Unit cards
+    html+=`<div class="ug" style="margin-bottom:12px">${['Juiz de Fora','Pouso Alegre','Uberlândia','Ipatinga'].map((u,i)=>{
+      const ul=f.filter(d=>d.unit===u);
+      const uQ=ul.filter(d=>d.quality==='Q').length,uM=ul.filter(d=>d.quality==='M').length,uF=ul.filter(d=>d.quality==='F').length;
+      const cnt={};ul.forEach(d=>cnt[d.vehicle]=(cnt[d.vehicle]||0)+1);
+      const topV2=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0];
+      const col=Object.values(UCOLS)[i];
+      return`<div class="uc" style="--uc:${col}">
+        <div class="uh"><div class="un">${u}</div><div class="ucount">${ul.length}</div></div>
+        <div class="uq">
+          <div class="uqp" style="background:var(--Qbg)"><span class="uqn" style="color:var(--Q)">${uQ}</span><span class="uql" style="color:var(--Q)">Quentes</span></div>
+          <div class="uqp" style="background:var(--Mbg)"><span class="uqn" style="color:var(--M)">${uM}</span><span class="uql" style="color:var(--M)">Mornos</span></div>
+          <div class="uqp" style="background:var(--Fbg)"><span class="uqn" style="color:var(--F)">${uF}</span><span class="uql" style="color:var(--F)">Frios</span></div>
+        </div>
+        <div class="uf">Mais demandado: <strong style="color:var(--tx)">${topV2?VNAMES[topV2[0]]||topV2[0]+' ('+topV2[1]+')':'—'}</strong>
+          ${ul.length?`<div class="ubr"><div style="flex:${uQ||0};background:var(--Q)"></div><div style="flex:${uM||0};background:var(--M)"></div><div style="flex:${uF||0};background:var(--F)"></div></div>`:''}
+        </div>
+      </div>`;
+    }).join('')}</div>`;
+
+  } else {
+    // Single unit — model bar + quality donut
+    html+=`<div class="g2">
+      <div class="panel"><div class="ptit">Leads por Modelo</div>${barChart(vKeys.map(v=>({l:v,v:f.filter(d=>d.vehicle===v).length})),Object.values(VCOLS),130)}</div>
+      <div class="panel"><div class="ptit">Qualidade</div>${donut([{l:'Quente',v:Q,c:'var(--Q)'},{l:'Morno',v:M,c:'var(--M)'},{l:'Frio',v:F,c:'var(--F)'}])}</div>
+    </div>`;
+
+    // Timeline breakdown
+    const tlOrder=['imediato','nos_próximos_15_dias','em_até_30_dias','apenas_pesquisando','ainda_estou_avaliando','consigo_financiar_sem_entrada'];
+    const tlData=tlOrder.map(t=>({l:TL_LABELS[t]||t,v:f.filter(d=>d.timeline===t).length,c:t==='imediato'?'var(--Q)':t.includes('15')?'#e8a020':t.includes('30')?'#a0c020':'var(--F)'})).filter(d=>d.v>0);
+    const mxTL=Math.max(...tlData.map(d=>d.v),1);
+    html+=`<div class="panel" style="margin-bottom:12px"><div class="ptit">Intenção de Compra</div>
+      <div class="tb">${tlData.map(t=>`<div class="tbr"><div class="tbl">${t.l}</div><div class="tbt"><div class="tbf" style="width:${Math.round(t.v/mxTL*100)}%;background:${t.c}"></div></div><div class="tbv">${t.v}</div></div>`).join('')}</div>
+    </div>`;
+  }
+
+  // Lead table
+  const thUnit = tab==='all'?'<th>Unidade</th>':'';
+  const rows = f.map((d,i)=>{
+    const dt=d.date?d.date.split('-').reverse().slice(0,2).join('/'):'-';
+    return`<tr>
+      <td style="color:var(--tx3);font-family:'Barlow Condensed',sans-serif">${String(i+1).padStart(3,'0')}</td>
+      <td style="font-family:'Barlow Condensed',sans-serif">${dt}</td>
+      ${tab==='all'?`<td style="color:${UCOLS[d.unit]||'var(--tx)'};font-family:'Barlow Condensed',sans-serif;font-weight:600">${d.unit}</td>`:''}
+      <td><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:${VCOLS[d.vehicle]||'var(--tx)'}">${VNAMES[d.vehicle]||d.vehicle}</span></td>
+      <td><span class="pill p${d.quality}">${d.quality==='Q'?'🔥':d.quality==='M'?'☀️':'❄️'} ${d.quality==='Q'?'Quente':d.quality==='M'?'Morno':'Frio'}</span></td>
+      <td style="color:var(--tx);font-weight:500">${d.name}</td>
+      <td>${d.city}</td>
+      <td><span style="font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:${d.platform==='ig'?'#cc00aa':'#4b8ef0'}">${d.platform==='ig'?'IG':'FB'}</span></td>
+    </tr>`;
+  }).join('');
+
+  html+=`<div class="tw"><div class="tscroll">
+    <table class="lt"><thead><tr><th>#</th><th>Data</th>${thUnit}<th>Modelo</th><th>Qualidade</th><th>Lead</th><th>Cidade</th><th>Canal</th></tr></thead>
+    <tbody>${rows||'<tr><td colspan="8" style="padding:24px;text-align:center;color:var(--tx3)">Nenhum lead encontrado com os filtros aplicados.</td></tr>'}</tbody></table>
+  </div>${tot?`<div class="tfooter"><span>${tot} lead${tot!==1?'s':''}</span><span>🔥 ${Q} quente${Q!==1?'s':''} · ☀️ ${M} morno${M!==1?'s':''} · ❄️ ${F} frio${F!==1?'s':''}</span></div>`:''}</div>`;
+
+  html+=`<div class="qleg">
+    <div><span style="background:var(--Q)"></span>Quente = Imediato ou Próximos 15 dias + entrada/veículo na troca</div>
+    <div><span style="background:var(--M)"></span>Morno = Próximos 15 dias sem entrada, ou Em até 30 dias + entrada</div>
+    <div><span style="background:var(--F)"></span>Frio = Apenas pesquisando / Avaliando / Sem entrada definida</div>
+  </div>`;
+
+  document.getElementById('content').innerHTML = html;
+}
+
+// ── AUTO-REFRESH ─────────────────────────────────────────────────────────
+const REFRESH_SEC = 5 * 60;
+let countdown = REFRESH_SEC;
+let countTimer = null;
+
+function startCountdown() {
+  clearInterval(countTimer);
+  countdown = REFRESH_SEC;
+  countTimer = setInterval(() => {
+    countdown--;
+    const m = String(Math.floor(countdown/60)).padStart(2,'0');
+    const s = String(countdown % 60).padStart(2,'0');
+    const el = document.getElementById('ts');
+    if(!el) return;
+    const now = new Date();
+    const hm = now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    const dt = now.toLocaleDateString('pt-BR');
+    el.innerHTML = `Atualizado ${dt} às ${hm} &nbsp;·&nbsp; <span style="color:var(--Q)">↺ ${m}:${s}</span>`;
+    if(countdown <= 0){ clearInterval(countTimer); loadData(); }
+  }, 1000);
+}
+
+// ── EVENTS ────────────────────────────────────────────────────────────────
+['fd','ft','fv','fq'].forEach(id=>document.getElementById(id).addEventListener('change',render));
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+loadData();
+</script>
+</body>
+</html>
